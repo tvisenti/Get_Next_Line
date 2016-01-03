@@ -32,5 +32,6 @@
 *.dSYM/
 
 *.swp
+*.swo
 test_gnl
 test
