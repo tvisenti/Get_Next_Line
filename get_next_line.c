@@ -21,11 +21,12 @@ int				get_next_line(int const fd, char **line)
 	static char	*save;
 	int			res;
 
+	res = 0;
 	while (res == read(fd, buf, BUFF_SIZE))
 	{
 		if (ft_strchr(buf, '\n'))
 		{
-			ft_strncpy(line, buf, ft_strclen(buf, '\n'));
+			ft_strncpy(*line, buf, ft_strclen(buf, '\n'));
 			save = ft_strocpy(buf, '\n');
 		}
 	}
