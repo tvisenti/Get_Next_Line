@@ -6,7 +6,7 @@
 /*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/30 09:58:01 by tvisenti          #+#    #+#             */
-/*   Updated: 2015/12/30 15:38:04 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/01/06 09:22:34 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,24 @@
 #include <string.h>
 #include "get_next_line.h"
 
+int				get_next_line(int const fd, char **line)
+{
+	char		buf[BUFF_SIZE];
+	static char	*save;
+	int			res;
 
+	while (res == read(fd, buf, BUFF_SIZE))
+	{
+		if (ft_strchr(buf, '\n'))
+		{
+			ft_strncpy(line, buf, ft_strclen(buf, '\n'));
+			save = ft_strocpy(buf, '\n');
+		}
+	}
+	return (0);
+}
+
+/*
 int				get_next_line(int const fd, char **line)
 {
 	static int	i;
@@ -33,23 +50,4 @@ int				get_next_line(int const fd, char **line)
 	}
 	return (0);
 }
-
-/*
-int			get_next_line(int const fd, char **line)
-{
-	static char	*buf;
-	char		*chr;
-	int			res;
-	int			i;
-
-	while (res == read(fd, buf, BUFF_SIZE))
-	{
-		if (res < 0)
-			return (res);
-		i = ft_strclen(buf, '\n');
-		chr = malloc(sizeof(char *) * i);
-		chr = ft_strchr(buf, '\n');
-		printf("%s\n", chr);
-	}
-	return (0);
-}*/
+*/
