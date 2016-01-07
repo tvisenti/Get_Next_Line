@@ -22,7 +22,7 @@ int		main(int argc, char **argv)
 	argc = 2;
 	i = 0;
 	line = NULL;
-	fd = open(argv[1], O_RDONLY, 0555);
+	fd = open(argv[2], O_RDONLY, 0555);
 	get_next_line(fd, line);
 	//ft_putstr(*line);
 	return (0);

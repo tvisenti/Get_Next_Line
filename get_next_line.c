@@ -28,6 +28,7 @@ int				get_next_line(int const fd, char **line)
 		{
 			ft_strncpy(*line, buf, ft_strclen(buf, '\n'));
 			save = ft_strocpy(buf, '\n');
+					printf("test");
 		}
 	}
 	return (0);
