@@ -15,15 +15,37 @@
 #include <string.h>
 #include "get_next_line.h"
 
-int				get_next_line(int const fd, char **line)
+static int		ckeck_backslash(char *str)
 {
-	char		buf[BUFF_SIZE];
-	static char	*save;
-	int			res;
+	int		i;
 
-	res = 0;
-	while (res == read(fd, buf, BUFF_SIZE))
+	i = 0;
+	while (str[i] != '\0')
 	{
+		if (str[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int		read_line(int fd, char **buf, char *save)
+{
+	int		res;
+
+}
+
+int			get_next_line(int const fd, char **line)
+{
+	char		*buf;
+	static char	*save;
+	int		res;
+
+
+	while (res == read(fd, buf, BUFF_SIZE) > 0)
+	{
+		*line = (char *)malloc(sizeof(char *) * BUFF_SIZE + ft_strlen(save) + 1);
+		*line = ft_strcpy(*line, save);
 		if (ft_strchr(buf, '\n'))
 		{
 			ft_strncpy(*line, buf, ft_strclen(buf, '\n'));
