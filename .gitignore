@@ -35,3 +35,4 @@
 *.swo
 test_gnl
 test
+procedure_gnl.c
