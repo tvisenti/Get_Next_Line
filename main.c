@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/15 10:58:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/01/03 10:31:43 by tvisenti         ###   ########.fr       */
+/*   Created: 2016/01/09 09:39:12 by tvisenti          #+#    #+#             */
+/*   Updated: 2016/01/09 09:39:14 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
+#include <fcntl.h>
 
-# define BUFF_SIZE 32
+int		main(int argc, char **argv)
+{
+	int		fd;
+	char	*line[100];
 
-# include <unistd.h>
-# include <stdlib.h>
-# include "libft/libft.h"
-
-# define BUF_MAX 2147483647
-
-int		get_next_line(int const fd, char **line);
-
-#endif
+	if (argc != 2)
+		return (0);
+	fd = open(argv[1], O_RDONLY, 0555);
+	get_next_line(fd, line);
+	ft_putstr(line[0]);
+	return (0);
+}
