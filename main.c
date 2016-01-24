@@ -16,12 +16,18 @@
 int		main(int argc, char **argv)
 {
 	int		fd;
-	char	*line[100];
+	int		i;
+	char	*line;
 
 	if (argc != 2)
 		return (0);
-	fd = open(argv[1], O_RDONLY, 0555);
-	get_next_line(fd, line);
-	ft_putstr(line[0]);
+	line = NULL;
+	fd = open(argv[1], O_RDONLY);
+	i = get_next_line(fd, &line);
+	while (i > 0)
+	{
+		printf("%s\n", line);
+		i = get_next_line(fd, &line);
+	}
 	return (0);
 }

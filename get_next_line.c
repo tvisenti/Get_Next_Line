@@ -6,74 +6,48 @@
 /*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 10:18:13 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/01/09 10:18:14 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/01/24 11:07:27 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
 #include "get_next_line.h"
 
-static char		*ft_strocpy(char *str, char c)
+static int		dupanddel(char **line, char **save, char **buff, int res)
 {
-	int		i;
-	int		i_save;
-	int		len;
-	char	*str_save;
-
-	i = 0;
-	len = 0;
-	while (str[i] != c)
-		i++;
-	i++;
-	i_save = i;
-	while (str[i])
-	{
-		i++;
-		len++;
-	}
-	str_save = (char *)malloc(sizeof(char) * len);
-	str_save = ft_strsub(str, i_save, len);
-	return (str_save);
-}
-
-static int		check_backslash(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static int	check_save(static char *save, )
-{
-
-}
-
-static int	read_line()
-{
-
-}
-
-int			get_next_line(int const fd, char **line)
-{
-	static char	*save[BUFF_MAX];
-	char		*cur;
-	int			res;
-
-	cur = ft_strnew(BUFF_SIZE);
-	if (fd < 0 || line == NULL || cur == NULL || BUFF_SIZE < 1)
+	if (!(*line = ft_strdup(*save)))
 		return (-1);
-	while ((res = read_line(fd, cur, BUFF_SIZE)) > 0)
+	ft_strdel(&*save);
+	ft_strdel(&*buff);
+	if (res == 0 || res == EOF)
+		return (0);
+	return (1);
+}
+
+int				get_next_line(int const fd, char **line)
+{
+	int			cnt;
+	int			res;
+	char		*buff;
+	static char	*save = NULL;
+
+	cnt = 0;
+	res = 0;
+	if (fd < 0 || !line || BUFF_SIZE < 1)
+		return (-1);
+	while (cnt < BUFF_SIZE)
 	{
-		if (*save != NULL)
-			check_save(save, cur, *line)
+		if (!save)
+			save = ft_strnew(2);
+		buff = ft_strnew(2);
+		if ((res = read(fd, buff, 1)) < 0)
+			return (-1);
+		if (*buff != '\n' && (res != 0 || res != EOF))
+			save = ft_strjoin(save, buff);
+		if (*buff == '\n' || res == 0 || res == EOF)
+			return (dupanddel(line, &save, &buff, res));
+		cnt++;
 	}
+	if (cnt == BUFF_SIZE)
+		return (get_next_line(fd, line));
+	return (-1);
 }

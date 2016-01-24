@@ -6,7 +6,7 @@
 /*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/15 10:58:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/01/03 10:31:43 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/01/24 10:13:16 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
 # include "libft/libft.h"
-
-# define BUF_MAX 2147483647
 
 int		get_next_line(int const fd, char **line);
 
