@@ -29,7 +29,6 @@ int		main(int argc, char **argv)
 	{
 		printf("%s\n", line);
 		i = get_next_line(fd, &line);
-
 	}
 	return (0);
 }
