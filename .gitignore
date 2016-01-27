@@ -36,3 +36,8 @@
 test_gnl
 test
 procedure_gnl.c
+a.out
+compil.sh
+libft
+test
+*.txt
