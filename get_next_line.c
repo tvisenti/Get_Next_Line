@@ -12,12 +12,62 @@
 
 #include "get_next_line.h"
 
+size_t		ft_strclen(const char *s, char c)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] && s[i] != c)
+		i++;
+	if (s[i] != c)
+			return (0);
+	return (i);
+}
+
+int		d_and_d(char **line, char **save, char **buff, int res)
+{
+
+}
+
+int		get_next_line(int fd, char **line)
+{
+	int					res;
+	char				*buff;
+	static char	*save = NULL;
+
+	res = 0;
+	if (fd < 0 || BUFF_SIZE < 1 || !*line || (!(buff = ft_strnew(BUFF_SIZE))))
+		return (-1);
+	while (res == read(fd, buff, BUFF_SIZE) > 0)
+	{
+		if (!save && (!(save = ft_strnew(BUFF_SIZE))))
+			return (-1);
+		while (*buff)
+		{
+			if (ft_strclen(buff, '\n') == 0)
+			{
+				save = ft_strdup(buff);
+				break ;
+			}
+			if (*buff == '\n')
+			{
+				*line = ft_strncpy(line, buff, ft_strclen(buff, '\n'));
+				save = ft_strsub(buff, ft_strclen(buff, '\n'), BUFF_SIZE);
+				break ;
+			}
+			*buff++;
+		}
+		return (res > 0 ) ? d_and_d(line, save, buff, res);
+		//return (res > 0) ? get_next_line(fd, line) : -1;
+	}
+}
+/*
 static int	d_and_d(char **line, char **save, char **buff, int res)
 {
 	if (!(*line = ft_strdup(*save)))
 		return (-1);
 	ft_strdel(save);
-	ft_strdel(buff);
+	ft_strdel(buff);.
 	return ((res == 0) ? 0 : 1);
 }
 
@@ -30,32 +80,24 @@ int				get_next_line(int const fd, char **line)
 	res = 0;
 	if (fd < 0 || !line || BUFF_SIZE < 1)
 		return (-1);
-		while ()
+				buff = ft_strnew(BUFF_SIZE);
+		while (res == read(fd, buff, BUFF_SIZE) < 0)
 		{
 			if (!save)
 				save = ft_strnew(BUFF_SIZE);
-			buff = ft_strnew(BUFF_SIZE);
+			ft_bzero(buff, BUFF_SIZE);
 			if (save == NULL || buff == NULL)
 				return (-1);
-			if ((res = read(fd, buff, BUFF_SIZE)) < 0)
-				return (-1);
-				if (*buff != '\n' && res != 0)
-					save = ft_strjoin(save, buff);
-				if (*buff == '\n' || res == 0)
-					return (d_and_d(line, &save, &buff, res));
+			if (*buff != '\n' && res != 0)
+				save = ft_strjoin(save, buff);
+			if (*buff == '\n' || res == 0)
+				d_and_d(line, &save, &buff, res);
+				printf("%s\n", *line);
 		}
-}
-/*
-
-static int	d_and_d(char **line, char **save, char **buff, int res)
-{
-	if (!(*line = ft_strdup(*save)))
 		return (-1);
-	ft_strdel(save);
-	ft_strdel(buff);
-	return ((res == 0) ? 0 : 1);
 }
-
+*/
+/*
 int				get_next_line(int const fd, char **line)
 {
 	int	cnt;
