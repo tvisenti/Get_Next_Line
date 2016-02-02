@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
+#include <stdio.h> //del
 #include <fcntl.h>
 
 int		main(int argc, char **argv)
@@ -27,7 +27,8 @@ int		main(int argc, char **argv)
 	i = get_next_line(fd, &line);
 	while (i > 0)
 	{
-		printf("%s\n", line);
+		ft_putstr(line);
+		ft_putchar('\n');
 		i = get_next_line(fd, &line);
 	}
 	return (0);
