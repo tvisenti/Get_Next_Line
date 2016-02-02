@@ -6,7 +6,7 @@
 /*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 10:18:13 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/01/24 19:25:59 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/02/02 13:32:04 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,102 @@ size_t		ft_strclen(const char *s, char c)
 	i = 0;
 	while (s[i] && s[i] != c)
 		i++;
-	if (s[i] != c)
-			return (0);
 	return (i);
 }
 
-int		d_and_d(char **line, char **save, char **buff, int res)
+int		get_next_line(int fd, char **line)
 {
+	int					res;
+	int					len;
+	char				buff[BUFF_SIZE + 1];
+	static char	**save = NULL;
 
+	len = 0;
+	if (fd < 0 || BUFF_SIZE < 1 || !line)
+		return (-1);
+	if ((save = (char **)malloc(sizeof(char *) * 257)) == NULL)
+		return (-1);
+	if (!save[fd] && (save[fd] = ft_strnew(BUFF_SIZE)) == NULL)
+				return (-1);
+	while (!(ft_strchr(save[fd], '\n')) && (res = read(fd, buff, BUFF_SIZE)) > 0)
+	{
+		//buff[res] = '\0';
+		save[fd] = ft_strjoin(save[fd], buff);
+	}
+	*line = ft_strsub(save[fd], 0, ft_strclen(save[fd], '\n'));
+	if (ft_strchr(save[fd], '\n'))
+	{
+		save[fd] = ft_strchr(save[fd], '\n') + 1;
+		return (1);
+	}
+	save[fd] += ft_strclen(save[fd], '\n');
+	return (res ? 1 : 0);
+}
+
+/*
+
+int			get_next_line(int fd, char **line)
+{
+	char			buff[BUFF_SIZE + 1];
+	static char		**save = NULL;
+	int				res;
+
+	if (fd < 0 || line == NULL || read(fd, buff, 0) < 0)
+		return (-1);
+	if (save == NULL || save[fd] == '\0')
+		save = ft_new_fd(save, fd);
+	while (!(ft_strchr(save[fd], '\n')) && (res = read(fd, buff, BUFF_SIZE)) > 0)
+	{
+		buff[res] = '\0';
+		save[fd] = ft_strjoin(save[fd], buff);
+	}
+	*line = ft_strsub(save[fd], 0, ft_cnt_chr(save[fd]));
+	if (ft_strchr(save[fd], '\n'))
+	{
+		save[fd] = ft_strchr(save[fd], '\n') + 1;
+		return (1);
+	}
+	save[fd] += ft_cnt_chr(save[fd]);
+	return (res ? 1 : 0);
+}
+
+int		get_next_line(int fd, char **line)
+{
+	int					res;
+	int					len;
+	char				buff[BUFF_SIZE];
+	static char	*save;
+
+	len = 0;
+	if (fd < 0 || BUFF_SIZE < 1 || !line)
+		return (-1);
+	while ((res = read(fd, buff, BUFF_SIZE)) > 0)
+	{
+		printf("buff : %s\n", buff);
+		getchar();
+		len = ft_strclen(buff, '\n');
+		buff[res] = '\0';
+		if (len == 0 && !save)
+			save = ft_strdup(buff);
+		else if (len == 0 && save)
+		{
+			save = ft_strjoin(save, buff);
+			printf("save : %s\n", save);
+			getchar();
+		}
+		else if (len > 0)
+		{
+			printf("1\n");
+			getchar();
+			*line = ft_strncpy(*line, buff, len - 1);
+			printf("here\n");
+			getchar();
+			save = ft_strsub(buff, len, BUFF_SIZE - len);
+			printf("ca foire ici\n");
+			getchar();
+		}
+	}
+	return (res ? 1 : 0);
 }
 
 int		get_next_line(int fd, char **line)
@@ -61,7 +149,7 @@ int		get_next_line(int fd, char **line)
 		//return (res > 0) ? get_next_line(fd, line) : -1;
 	}
 }
-/*
+
 static int	d_and_d(char **line, char **save, char **buff, int res)
 {
 	if (!(*line = ft_strdup(*save)))
