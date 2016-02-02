@@ -14,22 +14,28 @@
 #include <stdio.h> //del
 #include <fcntl.h>
 
-int		main(int argc, char **argv)
+void	ft_exit(const char *str)
 {
-	int		fd;
-	int		i;
-	char	*line;
+	if (str)
+		ft_putendl_fd(str, 2);
+	exit(1);
+}
 
-	if (argc != 2)
-		return (0);
-	line = NULL;
-	fd = open(argv[1], O_RDONLY);
-	i = get_next_line(fd, &line);
-	while (i > 0)
+int	main(int nb_arg, char **arg)
+{
+	char	*line;
+	int		fd;
+	int		code;
+
+	if (nb_arg != 2)
+		ft_exit("Error: Wrong argument number");
+	if ((fd = open(arg[1], O_RDONLY)) == -1)
+		ft_exit("Error: Can't open file");
+	while ((code = get_next_line(fd, &line)) > 0)
 	{
-		ft_putstr(line);
-		ft_putchar('\n');
-		i = get_next_line(fd, &line);
+		printf("%d - |%s|\n", code, line);
+		free(line);
 	}
+	printf("LAST %d - |%s|\n", code, line);
 	return (0);
 }
