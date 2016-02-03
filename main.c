@@ -21,21 +21,31 @@ void	ft_exit(const char *str)
 	exit(1);
 }
 
-int	main(int nb_arg, char **arg)
+int	main(int argc, char **argv)
 {
 	char	*line;
 	int		fd;
 	int		code;
+	int		len;
+	int		i;
 
-	if (nb_arg != 2)
-		ft_exit("Error: Wrong argument number");
-	if ((fd = open(arg[1], O_RDONLY)) == -1)
-		ft_exit("Error: Can't open file");
-	while ((code = get_next_line(fd, &line)) > 0)
+	i = 1;
+	printf("\n___Premier FD___ \n\n");
+	while (i < argc)
 	{
-		printf("%d - |%s|\n", code, line);
-		free(line);
+		if ((fd = open(argv[i], O_RDONLY)) == -1)
+			ft_exit("Error: Can't open file");
+		while ((code = get_next_line(fd, &line)) > 0)
+		{
+			len = ft_strlen(line);
+			printf("%d - %d - |%s|\n", code, len, line);
+			free(line);
+		}
+		i++;
+		if (i < argc)
+			printf("\n___Changement de FD___ \n\n");
 	}
+
 	printf("LAST %d - |%s|\n", code, line);
 	return (0);
 }
