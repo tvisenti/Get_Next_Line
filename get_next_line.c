@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-static unsigned int			ft_strclen(char *save)
+static unsigned int	ft_strclen(char *save)
 {
 	unsigned int	i;
 
@@ -22,44 +22,46 @@ static unsigned int			ft_strclen(char *save)
 	return (i);
 }
 
-int							get_next_line(int const fd, char **line)
+static char			**ft_allocate(char **save, int fd)
 {
-	char			buff[BUFF_SIZE + 1];
-	static char		**save = NULL;
-	int				res;
+	char	**new_save;
+
+	new_save = save;
+	if (!new_save)
+	{
+		if ((new_save = (char **)malloc(sizeof(char *) * 257)) == NULL)
+			return (NULL);
+	}
+	if (!(new_save[fd]))
+	{
+		if ((new_save[fd] = ft_strnew(0)) == NULL)
+			return (NULL);
+	}
+	return (new_save);
+}
+
+int					get_next_line(int const fd, char **line)
+{
+	char		buff[BUFF_SIZE + 1];
+	static char	**save = NULL;
+	int			res;
 
 	if (fd < 0 || BUFF_SIZE < 1 || !line || read(fd, buff, 0) < 0)
 		return (-1);
-	if (!save)
-	{
-		if ((save = (char **)malloc(sizeof(char *) * 257)) == NULL)
-			return (-1);
-	}
-	if (!(save[fd]))
-	{
-		if ((save[fd] = ft_strnew(0)) == NULL)
-			return (-1);
-	}
-//	ft_putstr("save[fd] avant la boucle:"); ft_putstr("\n"); ft_putstr(save[fd]); ft_putstr("\n"); getchar();
-	while (!(ft_strchr(save[fd], '\n')) && (res = read(fd, buff, BUFF_SIZE)) > 0)
+	if (!(save = ft_allocate(save, fd)))
+		return (-1);
+	while (!(ft_strchr(save[fd], '\n')) &&
+	(res = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		buff[res] = '\0';
-//		ft_putstr("save[fd] avant le join:"); ft_putstr("\n"); ft_putstr(save[fd]);
 		save[fd] = ft_strjoin(save[fd], buff);
-//		ft_putstr("save[fd] apres le join:"); ft_putstr("\n"); ft_putstr(save[fd]); ft_putstr("\n"); getchar();
 	}
-//	ft_putstr("save[fd] avant le sub:"); ft_putstr("\n"); ft_putstr(save[fd]); getchar();
 	*line = ft_strsub(save[fd], 0, ft_strclen(save[fd]));
-//	ft_putstr("line apres le sub:"); ft_putstr("\n"); ft_putstr(*line); ft_putstr("\n"); getchar();
 	if (ft_strchr(save[fd], '\n'))
 	{
-//		ft_putstr("buff avant le strchr:"); ft_putstr("\n"); ft_putstr(buff); ft_putstr("\n");
-//		ft_putstr("save[fd] avant le strchr:"); ft_putstr("\n"); ft_putstr(save[fd]); ft_putstr("\n");
-			save[fd] = ft_strcpy(save[fd], ft_strchr(save[fd], '\n') + 1);
-	//	ft_putstr("save[fd] apres le strchr:"); ft_putstr("\n"); ft_putstr(save[fd]); ft_putstr("\n"); getchar();
+		save[fd] = ft_strcpy(save[fd], ft_strchr(save[fd], '\n') + 1);
 		return (1);
 	}
-	save[fd] += ft_strclen(save[fd] + 1);
-//	ft_putstr("save[fd] juste avant la fin:"); ft_putstr("\n"); ft_putstr(save[fd]); ft_putstr("\n"); getchar();
+	save[fd] = save[fd] + ft_strclen(save[fd]);
 	return (res ? 1 : 0);
 }
