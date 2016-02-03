@@ -6,18 +6,17 @@
 /*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/15 10:58:06 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/01/24 10:13:16 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/02/03 11:53:41 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 8
+# define BUFF_SIZE 42
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include "libft/libft.h"
 
 int		get_next_line(int const fd, char **line);
