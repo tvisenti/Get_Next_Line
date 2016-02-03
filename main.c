@@ -6,22 +6,22 @@
 /*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 09:39:12 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/01/09 09:39:14 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/02/03 11:19:24 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h> //del
+#include <stdio.h>
 #include <fcntl.h>
 
-void	ft_exit(const char *str)
+void		ft_exit(const char *str)
 {
 	if (str)
 		ft_putendl_fd(str, 2);
 	exit(1);
 }
 
-int	main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	char	*line;
 	int		fd;
@@ -45,7 +45,6 @@ int	main(int argc, char **argv)
 		if (i < argc)
 			printf("\n___Changement de FD___ \n\n");
 	}
-
 	printf("LAST %d - |%s|\n", code, line);
 	return (0);
 }
