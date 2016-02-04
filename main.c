@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 09:39:12 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/02/03 11:19:24 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/02/04 16:26:58 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int			main(int argc, char **argv)
 	int		i;
 
 	i = 1;
-	printf("\n___Premier FD___ \n\n");
+	printf("BUFF_SIZE = %d\n", BUFF_SIZE);
+	printf("___Premier FD___ \n\n");
 	while (i < argc)
 	{
 		if ((fd = open(argv[i], O_RDONLY)) == -1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tvisenti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 10:18:13 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/02/02 13:32:04 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/02/04 17:03:48 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static unsigned int	ft_strclen(char *save)
 
 static char			**ft_allocate(char **save, int fd)
 {
-	char	**new_save;
+	char			**new_save;
 
 	new_save = save;
 	if (!new_save)
@@ -38,6 +38,21 @@ static char			**ft_allocate(char **save, int fd)
 			return (NULL);
 	}
 	return (new_save);
+}
+
+static char			*ft_chrandcpy(char *save)
+{
+	if (ft_strchr(save, '\n'))
+	{
+		ft_strcpy(save, ft_strchr(save, '\n') + 1);
+		return (save);
+	}
+	if (ft_strclen(save) > 0)
+	{
+		ft_strcpy(save, ft_strchr(save, '\0'));
+		return (save);
+	}
+	return (NULL);
 }
 
 int					get_next_line(int const fd, char **line)
@@ -57,11 +72,28 @@ int					get_next_line(int const fd, char **line)
 		save[fd] = ft_strjoin(save[fd], buff);
 	}
 	*line = ft_strsub(save[fd], 0, ft_strclen(save[fd]));
-	if (ft_strchr(save[fd], '\n'))
-	{
-		save[fd] = ft_strcpy(save[fd], ft_strchr(save[fd], '\n') + 1);
-		return (1);
-	}
-	save[fd] = save[fd] + ft_strclen(save[fd]);
-	return (res ? 1 : 0);
+	if (ft_chrandcpy(save[fd]) == NULL)
+		return (0);
+	return (1);
 }
+/*
+static char			*ft_chrandcpy(char *save)
+{
+	char	*new;
+
+	if (ft_strchr(save, '\n'))
+	{
+		new = malloc(sizeof(char *) * ft_strclen(save) + 1);
+		ft_strcpy(new, ft_strchr(save, '\n') + 1);
+		free(save);
+		return (new);
+	}
+	if (ft_strclen(save) > 0)
+	{
+		new = malloc(sizeof(char *) * ft_strclen(save));
+		ft_strcpy(new, ft_strchr(save, '\0'));
+		free(save);
+		return (new);
+	}
+	return (NULL);
+}*/
