@@ -6,7 +6,7 @@
 /*   By: tvisenti <tvisenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/09 10:18:13 by tvisenti          #+#    #+#             */
-/*   Updated: 2016/02/08 18:55:49 by tvisenti         ###   ########.fr       */
+/*   Updated: 2016/02/09 12:07:20 by tvisenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,6 @@ static unsigned int	ft_strclen(char *save)
 	while (save[i] != '\n' && save[i] != '\0')
 		i++;
 	return (i);
-}
-
-static char			**ft_allocate(char **save, int fd)
-{
-	char			**new_save;
-
-	new_save = save;
-	if (!new_save)
-	{
-		if ((new_save = (char **)malloc(sizeof(char *) * 257)) == NULL)
-			return (NULL);
-	}
-	if (!(new_save[fd]))
-	{
-		if ((new_save[fd] = ft_strnew(0)) == NULL)
-			return (NULL);
-	}
-	return (new_save);
 }
 
 static char			*ft_strrejoin(char *s1, char *s2, size_t len)
@@ -75,20 +57,20 @@ static char			*ft_chrandcpy(char *save)
 int					get_next_line(int const fd, char **line)
 {
 	char		buff[BUFF_SIZE + 1];
-	static char	**save = NULL;
+	static char	*save[256];
 	int			res;
 	char		*ptr;
 
 	if (fd < 0 || BUFF_SIZE < 1 || !line || read(fd, buff, 0) < 0)
 		return (-1);
-	if (!(save = ft_allocate(save, fd)))
+	if (!(save[fd]) && (save[fd] = ft_strnew(0)) == NULL)
 		return (-1);
 	while (!(ft_strchr(save[fd], '\n')) &&
 	(res = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		buff[res] = '\0';
 		ptr = save[fd];
-		save[fd] = ft_strrejoin(save[fd], buff, res);
+		save[fd] = ft_strrejoin(ptr, buff, res);
 		free(ptr);
 	}
 	*line = ft_strsub(save[fd], 0, ft_strclen(save[fd]));
