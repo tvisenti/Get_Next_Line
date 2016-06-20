@@ -1,5 +1,4 @@
-# Get_Next_Line
-Get_Next_Line - 42 - Project 03
+# Get_Next_Line - 42 - Project 03
 
 #### Objectifs
 
